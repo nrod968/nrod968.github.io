@@ -2,7 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+// Get the root element and ensure it's not null
+const rootElement = document.getElementById("root");
+if (!rootElement) {
+    throw new Error("Root element not found");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+
+// Render the app
 root.render(
     <React.StrictMode>
         <App />
