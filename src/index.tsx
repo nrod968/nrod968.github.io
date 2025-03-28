@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import ClippedDrawer from "./components/ClippedDrawer";
 
 // Get the root element and ensure it's not null
 const rootElement = document.getElementById("root");
@@ -13,6 +14,6 @@ const root = ReactDOM.createRoot(rootElement);
 // Render the app
 root.render(
     <React.StrictMode>
-        <App />
+        <ClippedDrawer content={<App />} />
     </React.StrictMode>
 );
