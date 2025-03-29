@@ -14,6 +14,8 @@ const root = ReactDOM.createRoot(rootElement);
 // Render the app
 root.render(
     <React.StrictMode>
-        <ClippedDrawer content={<App />} />
+        <ClippedDrawer>
+            <App />
+        </ClippedDrawer>
     </React.StrictMode>
 );

@@ -18,10 +18,10 @@ import { Theme } from '@mui/material/styles';
 const drawerWidth = 240;
 
 interface ClippedDrawerProps {
-    content: React.ReactNode;
+    children: React.ReactNode;
 }
 
-export default function ClippedDrawer({ content }: ClippedDrawerProps) {
+export default function ClippedDrawer({ children }: ClippedDrawerProps) {
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -67,7 +67,7 @@ export default function ClippedDrawer({ content }: ClippedDrawerProps) {
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
-                {content}
+                {children}
             </Box>
         </Box>
     );
