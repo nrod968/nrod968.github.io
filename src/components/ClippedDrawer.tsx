@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
-import { Folder, InsertDriveFile } from '@mui/icons-material';
 import { fetchFolderStructure } from '../utils/utils';
 
 const drawerWidth = 240;
@@ -21,7 +20,7 @@ export default function ClippedDrawer() {
     const renderTree = (nodes: any, path = '') => {
         return Object.entries(nodes).map(([key, value]) => {
             const nodePath = path ? `${path}/${key}` : key;
-            if (value === null) {
+            if (typeof value === 'string') {
                 return (
                     <TreeItem
                         key={nodePath}
@@ -29,8 +28,7 @@ export default function ClippedDrawer() {
                         label={
                             <Link to={`/${nodePath}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                 <Box display="flex" alignItems="center">
-                                    <InsertDriveFile fontSize="small" sx={{ marginRight: 1 }} />
-                                    {key}
+                                    {value}
                                 </Box>
                             </Link>
                         }
@@ -43,7 +41,6 @@ export default function ClippedDrawer() {
                     itemId={nodePath}
                     label={
                         <Box display="flex" alignItems="center">
-                            <Folder fontSize="small" sx={{ marginRight: 1 }} />
                             {key}
                         </Box>
                     }
