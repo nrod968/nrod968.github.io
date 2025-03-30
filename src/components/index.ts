@@ -1,2 +1,2 @@
-export * from './Navbar';
+export * from './FileViewer';
 export * from './ClippedDrawer';

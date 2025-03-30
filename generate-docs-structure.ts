@@ -29,7 +29,7 @@ function generateStructure(dir: string): FolderStructure {
             if (stat.isDirectory()) {
                 result[item] = generateStructure(itemPath);
             } else if (stat.isFile() && path.extname(item) === '.md') {
-                result[item] = path.basename(item, '.md'); // Mark as null for files
+                result[item] = path.basename(item, path.extname(item)); // Store the file name without extension
             }
         }
     } catch (error) {
