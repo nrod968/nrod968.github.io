@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import Typography from '@mui/material/Typography';
 
 export default function FileViewer() {
-    const { folder, file } = useParams<{ folder: string; file: string }>();
+    const { '*': filePath } = useParams();
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
-        if (folder && file) {
-            fetch(`${process.env.PUBLIC_URL}/docs/${folder}/${file}`)
+        if (filePath) {
+            fetch(`${process.env.PUBLIC_URL}/docs/${filePath}`)
                 .then((response) => response.text())
                 .then(setContent)
                 .catch(() => setContent('Error loading file.'));
         }
-    }, [folder, file]);
+    }, [filePath]);
 
     return (
         <div>
-            <Typography variant="h4" gutterBottom>{file}</Typography>
+            <Typography variant="h4" gutterBottom>{filePath?.split('/').pop()}</Typography>
             <ReactMarkdown>{content}</ReactMarkdown>
         </div>
     );

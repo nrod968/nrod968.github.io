@@ -4,22 +4,55 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import { SimpleTreeView, TreeItem } from '@mui/x-tree-view';
+import { Folder, InsertDriveFile } from '@mui/icons-material';
 import { fetchFolderStructure } from '../utils/utils';
 
 const drawerWidth = 240;
 
 export default function ClippedDrawer() {
-    const [folderStructure, setFolderStructure] = useState<Record<string, string[]>>({});
+    const [folderStructure, setFolderStructure] = useState<any>({});
 
     useEffect(() => {
         fetchFolderStructure().then(setFolderStructure);
     }, []);
+
+    const renderTree = (nodes: any, path = '') => {
+        return Object.entries(nodes).map(([key, value]) => {
+            const nodePath = path ? `${path}/${key}` : key;
+            if (value === null) {
+                return (
+                    <TreeItem
+                        key={nodePath}
+                        itemId={nodePath}
+                        label={
+                            <Link to={`/${nodePath}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <Box display="flex" alignItems="center">
+                                    <InsertDriveFile fontSize="small" sx={{ marginRight: 1 }} />
+                                    {key}
+                                </Box>
+                            </Link>
+                        }
+                    />
+                );
+            }
+            return (
+                <TreeItem
+                    key={nodePath}
+                    itemId={nodePath}
+                    label={
+                        <Box display="flex" alignItems="center">
+                            <Folder fontSize="small" sx={{ marginRight: 1 }} />
+                            {key}
+                        </Box>
+                    }
+                >
+                    {renderTree(value, nodePath)}
+                </TreeItem>
+            );
+        });
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -37,25 +70,10 @@ export default function ClippedDrawer() {
                 }}
             >
                 <Toolbar />
-                <Box sx={{ overflow: 'auto' }}>
-                    {Object.entries(folderStructure).map(([folder, files]) => (
-                        <React.Fragment key={folder}>
-                            <Typography sx={{ padding: '8px 16px', fontWeight: 'bold' }}>{folder}</Typography>
-                            <List>
-                                {files.map((file) => (
-                                    <ListItem key={file} disablePadding>
-                                        <ListItemButton component={Link} to={`/${folder}/${file}`}>
-                                            <ListItemText primary={file} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
-                            <Divider />
-                        </React.Fragment>
-                    ))}
-                </Box>
+                <SimpleTreeView>
+                    {renderTree(folderStructure)}
+                </SimpleTreeView>
             </Drawer>
-            {/* Content Area */}
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
                 <Outlet />

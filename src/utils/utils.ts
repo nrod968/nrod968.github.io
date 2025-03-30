@@ -1,5 +1,5 @@
+// utils.ts
 export async function fetchFolderStructure(): Promise<any> {
-    const baseUrl = process.env.PUBLIC_URL || '';
-    const response = await fetch(`${baseUrl}/docs-structure.json`);
+    const response = await fetch(`${process.env.PUBLIC_URL}/docs-structure.json`);
     return response.json();
 }
