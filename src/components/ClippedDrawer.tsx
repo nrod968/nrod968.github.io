@@ -1,35 +1,31 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import { fetchFolderStructure } from '../utils/utils';
 
 const drawerWidth = 240;
 
-interface ClippedDrawerProps {
-    children: React.ReactNode;
-}
+export default function ClippedDrawer() {
+    const [folderStructure, setFolderStructure] = useState<Record<string, string[]>>({});
 
-export default function ClippedDrawer({ children }: ClippedDrawerProps) {
+    useEffect(() => {
+        fetchFolderStructure().then(setFolderStructure);
+    }, []);
+
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme: Theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed" sx={{ zIndex: 1201 }}>
                 <Toolbar>
-                    <Typography variant="h6" noWrap component="div">
-                        Clipped drawer
-                    </Typography>
+                    <Typography variant="h6" noWrap>Markdown Viewer</Typography>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -42,32 +38,27 @@ export default function ClippedDrawer({ children }: ClippedDrawerProps) {
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
-                    <List>
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton>
-                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </List>
+                    {Object.entries(folderStructure).map(([folder, files]) => (
+                        <React.Fragment key={folder}>
+                            <Typography sx={{ padding: '8px 16px', fontWeight: 'bold' }}>{folder}</Typography>
+                            <List>
+                                {files.map((file) => (
+                                    <ListItem key={file} disablePadding>
+                                        <ListItemButton component={Link} to={`/${folder}/${file}`}>
+                                            <ListItemText primary={file} />
+                                        </ListItemButton>
+                                    </ListItem>
+                                ))}
+                            </List>
+                            <Divider />
+                        </React.Fragment>
+                    ))}
                 </Box>
             </Drawer>
+            {/* Content Area */}
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
-                {children}
+                <Outlet />
             </Box>
         </Box>
     );

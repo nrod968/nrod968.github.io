@@ -1,19 +1,18 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import React from "react";
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import ClippedDrawer from "./components/ClippedDrawer";
+// App.tsx
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ClippedDrawer from './components/ClippedDrawer';
+import FileViewer from './components/FileViewer';
+import { Typography } from '@mui/material';
 
-const App = () => {
+export default function App() {
     return (
-        <Router> {/* No basename needed if using a user GitHub Pages repo */}
+        <Router>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
+                <Route path="/" element={<ClippedDrawer />}>
+                    <Route path=":folder/:file" element={<FileViewer />} />
+                    <Route path="*" element={<Typography>Select a markdown file from the sidebar</Typography>} />
+                </Route>
             </Routes>
         </Router>
     );
-};
-
-export default App;
+}
