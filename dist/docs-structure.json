@@ -1,0 +1,12 @@
+{
+  "folder1": {
+    "file1.md": "file1",
+    "file2.md": "file2",
+    "subfolder1": {
+      "file3.md": "file3"
+    }
+  },
+  "folder2": {
+    "file4.md": "file4"
+  }
+}

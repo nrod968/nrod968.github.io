@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
@@ -9,7 +10,7 @@ export default function FileViewer() {
 
     useEffect(() => {
         if (filePath) {
-            fetch(`${process.env.PUBLIC_URL}/docs/${filePath}`)
+            fetch(`${import.meta.env.VITE_PUBLIC_URL}/docs/${filePath}`)
                 .then((response) => response.text())
                 .then(setContent)
                 .catch(() => setContent('Error loading file.'));
