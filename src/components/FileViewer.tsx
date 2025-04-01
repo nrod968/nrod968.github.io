@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import Typography from '@mui/material/Typography';
+import ReactMarkdownLatex from './ReactMarkdownLatex';
 
 export default function FileViewer() {
     const { '*': filePath } = useParams();
@@ -20,7 +20,7 @@ export default function FileViewer() {
     return (
         <div>
             <Typography variant="h4" gutterBottom>{filePath?.split('/').pop()}</Typography>
-            <ReactMarkdown>{content}</ReactMarkdown>
+            <ReactMarkdownLatex content={content} />
         </div>
     );
 }
